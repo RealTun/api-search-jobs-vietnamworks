@@ -78,7 +78,7 @@ const searchJobs = async (req, res, next) => {
 
         const response = await axios.post(apiUrl, bodyToSendRequest);
         const data = response.data['data'];
-        const selectedKeys = ['jobTitle', 'jobUrl', 'companyName', 'jobDescription', 'jobRequirement', 'skills', 'benefits', 'workingLocations', 'address', 'jobLevel', 'prettySalary', 'rangeAge', 'salaryCurrency'];
+        const selectedKeys = ['jobTitle', 'jobUrl', 'companyName', 'companyLogo', 'jobDescription', 'jobRequirement', 'skills', 'benefits', 'workingLocations', 'address', 'jobLevel', 'prettySalary', 'rangeAge', 'salaryCurrency'];
 
         const filteredData = data.map(item => {
             const newObj = {};
@@ -99,6 +99,47 @@ const searchJobs = async (req, res, next) => {
     }
 };
 
+const findCompanyByName = async (req, res, next) => {
+    try {
+        const apiUrl = `https://ms.vietnamworks.com/company-profile/v1.0/company/search`;
+
+        const keyword = req.body.keyword
+        // console.log(keyword);
+
+        const bodyToSendRequest = {
+            "query": `${keyword}`,
+            "order": [],
+            "facets": [],
+            "hitsPerPage": 10,
+            "filter": [],
+            "page": 0,
+            "userId": 0,
+            "isJobs": true
+        }
+
+        const response = await axios.post(apiUrl, bodyToSendRequest);
+        const data = response.data['data'][0];
+        const selectedKeys = ['companyId', 'companyName', 'companyLogoURL', 'companyProfile', 'website', 'jobImageURLs', 'address', 'workingLocation', 'industries', 'followerCount', 'onlineJobCount', 'bannerDesktopUri', 'jobs'];
+
+        const filteredData = {};
+        selectedKeys.forEach(key => {
+            if (data.hasOwnProperty(key)) {
+                filteredData[key] = data[key];
+            }
+        });
+
+        res.status(200).json({
+            message: 'Get company success',
+            data: filteredData
+        });
+    } catch (error) {
+        res.status(error.response?.status || 500).json({
+            message: error.message
+        });
+    }
+};
+
 module.exports = {
-    searchJobs
+    searchJobs,
+    findCompanyByName
 };
