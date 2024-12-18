@@ -128,7 +128,7 @@ const getListMarkDetail = async (req, res, next) => {
 
 const getSummaryMark = async (req, res, next) => {
     try {
-        const apiUrl = `${baseUrl}/education/api/studentsummarymark/getbystudent`;     
+        const apiUrl = `${baseUrl}/education/api/studentsummarymark/getbystudent`;
 
         const token = req.headers.authorization;
 
@@ -146,14 +146,16 @@ const getSummaryMark = async (req, res, next) => {
 
         const data = response.data;
         const result = {
+            "uid": data['student']['studentCode'],
             "displayName": data['student']['displayName'],
             "username": data['student']['username'],
-            "email": data['student']['email'],
+            "email": data['student']['user']['email'],
             "birthPlace": data['student']['birthPlace'],
             "birthDate": data['student']['birthDateString'],
             "gender": data['student']['gender'],
             "phoneNumber": data['student']['phoneNumber'],
             "idNumber": data['student']['idNumber'],
+            "class": data['student']['enrollmentClass']['className'],
             "speciality": data['student']['enrollmentClass']['speciality']['name'],
             "department": data['student']['enrollmentClass']['department']['name'],
             "courseyear": data['student']['enrollmentClass']['courseyear']['name'],

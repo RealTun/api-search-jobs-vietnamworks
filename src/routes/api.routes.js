@@ -10,6 +10,6 @@ router.post('/login', login);
 router.get('/student/getSummaryMark', getSummaryMark);
 
 // jobs
-router.get('/jobs/search', searchJobs);
+router.post('/jobs/search', searchJobs);
 
 module.exports = router;

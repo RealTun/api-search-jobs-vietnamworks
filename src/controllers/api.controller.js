@@ -10,7 +10,7 @@ const searchJobs = async (req, res, next) => {
 
         // const requestData = req.body;
         const keyword = req.body.keyword
-        console.log(keyword);
+        // console.log(keyword);
 
         const bodyToSendRequest = {
             "userId": 0,
