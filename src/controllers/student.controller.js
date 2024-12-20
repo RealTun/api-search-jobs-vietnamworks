@@ -100,24 +100,24 @@ const getListMarkDetail = async (req, res, next) => {
             },
         });
 
-        const idsToFind = [354, 358];
-        const filteredData = response.data.filter(item => 
-            item.subject && idsToFind.includes(item.subject.id)
-        );
+        // const idsToFind = [354, 358];
+        // const filteredData = response.data.filter(item => 
+        //     item.subject && idsToFind.includes(item.subject.id)
+        // );
 
-        const result = filteredData.map(item => {
-            const name = item.id === 354 ? 'Phân tích dữ liệu lớn' : 'Quản trị hệ thống thông tin'
-        
+        const result = response.data.map(item => {
+            // const name = item.id === 354 ? 'Phân tích dữ liệu lớn' : 'Quản trị hệ thống thông tin'
             return {
-                subject: name,
-                mark: item.mark,
-                mark4: item.mark4,
+                subjectName: item['subject']['subjectName'],
+                mark: item['mark'],
+                mark4: item['mark4'],
+                charmark: item['charMark']
             };
         });
 
         res.status(200).json({
             message: 'Get list mark success',
-            data: response.data  
+            data: result
         });
     } catch (error) {
         res.status(error.response?.status || 500).json({
